@@ -1,18 +1,18 @@
 import { Router } from 'express';
-import { createUser, getUser /*, updateUser, deleteUser*/ } from '../controller/userController';
+import { createUser, getUser, updateUser, deleteUser, loginUser } from '../controller/userController';
+import { verifyToken } from '../auth';
 
-const router = Router();
+const usersRouter = Router();
 
-// GET /users/:id
-router.get('/', getUser);
 
-// POST /users
-router.post('/', createUser);
+usersRouter.get('/', getUser);
 
-// PUT /users/:id
-// router.put('/:id', updateUser);
+usersRouter.post('/', createUser);
 
-// DELETE /users/:id
-// router.delete('/:id', deleteUser);
+usersRouter.put('/:email', updateUser);
 
-export default router;
+usersRouter.delete(':email', deleteUser);
+
+usersRouter.post('/login', loginUser);
+
+export default usersRouter;

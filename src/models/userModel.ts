@@ -6,9 +6,18 @@ class User extends Model {
   public name!: string;
   public email!: string;
   public password!: string;
+  public type!: "teacher" | "student" | string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
+  public static async login(email: string, password: string): Promise<User | null> {
+    return User.findOne({
+      where: {
+        email,
+        password,
+      },
+    });
+  }
 
   public static async findAllUsers(): Promise<User[]> {
     return User.findAll();
@@ -38,6 +47,10 @@ User.init(
       type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
+    },
+    type: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
     },
     name: {
       type: DataTypes.STRING(50),
