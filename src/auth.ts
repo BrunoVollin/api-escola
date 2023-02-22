@@ -37,4 +37,9 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export { generateToken, verifyToken };
+function  getUserByToken(token: string) {
+  const decoded = jwt.verify(token, 'my-secret-key') as User;
+  return decoded;
+}
+
+export { generateToken, verifyToken, getUserByToken };

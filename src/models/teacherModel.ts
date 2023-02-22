@@ -1,65 +1,60 @@
-import { Model, DataTypes } from 'sequelize';
-import { sequelize } from '../database/database';
-import Classroom from './classroomModel';
-import Student from './studentsModel';
+import {
+    Association, DataTypes, Model, Sequelize,
+    HasManyAddAssociationMixin,
+    HasManyAddAssociationsMixin,
+    HasManyCountAssociationsMixin,
+    HasManyCreateAssociationMixin,
+    HasManyGetAssociationsMixin,
+    HasManyHasAssociationMixin,
+    HasManyHasAssociationsMixin,
+    HasManyRemoveAssociationMixin,
+    HasManyRemoveAssociationsMixin,
+    HasManySetAssociationsMixin
+} from 'sequelize'
+
+import Class from './classModel'
 
 class Teacher extends Model {
-    public name!: string;
-    public email!: string;
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
+    public first!: string
+    public last!: string
+    public email!: string
+    public password!: string
 
-    public static async login(email: any, password: any) {
-        return Teacher.findOne({
-            where: {
-                email,
-                password,
-            },
-        });
+    // Auto-generated
+    public id!: number
+    public createdAt!: Date;
+    public updatedAt!: Date;
+
+    // Class association methods
+    public addClass!: HasManyAddAssociationMixin<Class, number>
+    public addClasses!: HasManyAddAssociationsMixin<Class, number>
+    public countClasses!: HasManyCountAssociationsMixin
+    public createClass!: HasManyCreateAssociationMixin<Class>
+    public getClasses!: HasManyGetAssociationsMixin<Class>
+    public hasClass!: HasManyHasAssociationMixin<Class, number>
+    public hasClasses!: HasManyHasAssociationsMixin<Class, number>
+    public removeClass!: HasManyRemoveAssociationMixin<Class, number>
+    public removeClasses!: HasManyRemoveAssociationsMixin<Class, number>
+    public setClasses!: HasManySetAssociationsMixin<Class, number>
+
+
+    // Populated for inclusions
+    public readonly classes?: Class[]
+
+    public static associations: {
+        classes: Association<Teacher, Class>
     }
 
-    public static async getAllClassrooms(teacherEmail: string) {
-        // get all classrooms from a teacher and all students from each classroom
-        return Teacher.findOne({
-            where: {
-                email: teacherEmail,
-            },
-            include: [
-                {
-                    model: Classroom,
-                    as: 'classrooms',
-                    include: [
-                        {
-                            model: Student,
-                            as: 'students',
-                        },
-                    ],
-                },
-            ],
-        });
-
+    public static initialize(sequelize: Sequelize) {
+        this.init({
+            first: DataTypes.STRING,
+            last: DataTypes.STRING,
+            email: DataTypes.STRING,
+            password: DataTypes.STRING
+        }, {
+            sequelize,
+        })
     }
 }
 
-
-Teacher.init(
-    {
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        email: {
-            type: DataTypes.STRING,
-            primaryKey: true,
-        },
-    },
-    {
-        sequelize,
-        modelName: 'Teacher',
-        timestamps: false,
-    }
-);
-
-Teacher.hasMany(Classroom, { as: 'classrooms', foreignKey: 'teacherEmail' });
-
-export default Teacher;
+export default Teacher
