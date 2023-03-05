@@ -20,6 +20,7 @@ import Teacher from './teacherModel'
 
 class Class extends Model {
     public name!: string
+    public description!: string
 
     // Auto-generated
     public id!: number
@@ -54,7 +55,8 @@ class Class extends Model {
 
     public static initialize(sequelize: Sequelize) {
         this.init({
-            name: DataTypes.STRING
+            name: DataTypes.STRING,
+            description: DataTypes.STRING
         }, {
             sequelize: sequelize,
 

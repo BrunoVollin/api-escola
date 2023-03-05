@@ -1,5 +1,11 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
+//env
+import dotenv from 'dotenv';
+//get key from .env
+dotenv.config();
+
+const key: string = process.env.SECRET_KEY || "secret";
 
 interface User {
   id: number;
@@ -15,7 +21,7 @@ declare global {
   }
 
 function generateToken(user: User): string {
-  const token = jwt.sign({ id: user.id, email: user.email }, 'my-secret-key', { expiresIn: '1h' });
+  const token = jwt.sign({ id: user.id, email: user.email }, key, { expiresIn: '1h' });
   return token;
 }
 
@@ -29,7 +35,7 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
   const [, token] = authHeader.split(' ');
 
   try {
-    const decoded = jwt.verify(token, 'my-secret-key') as User;
+    const decoded = jwt.verify(token, key) as User;
     req.user = decoded;
     next();
   } catch (error: any) {
@@ -38,7 +44,7 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
 }
 
 function  getUserByToken(token: string) {
-  const decoded = jwt.verify(token, 'my-secret-key') as User;
+  const decoded = jwt.verify(token, key) as User;
   return decoded;
 }
 
