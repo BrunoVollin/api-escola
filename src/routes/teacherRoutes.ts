@@ -1,17 +1,17 @@
 import { Router } from 'express';
-import UserController from '../controller/userController';
+import TeacherController from '../controller/teacherController';
 import { verifyToken } from '../auth';
 
-const usersRouter = Router();
+const teacherRouter = Router();
 
-usersRouter.post('/register', UserController.register);
+teacherRouter.post('/class', verifyToken, TeacherController.createClass);
 
-usersRouter.post('/login', UserController.login);
+teacherRouter.post('/class/student', verifyToken, TeacherController.addStudentToClass);
 
-usersRouter.post('/class', verifyToken, UserController.createClass);
+teacherRouter.get('/class', verifyToken, TeacherController.getAllClasses);
 
-usersRouter.post('/class/student', verifyToken, UserController.addStudentToClass);
+teacherRouter.post('/test', verifyToken, TeacherController.createTest);
 
-usersRouter.get('/class', verifyToken, UserController.getAllClasses);
+teacherRouter.get('/test', verifyToken, TeacherController.getAllTests);
 
-export default usersRouter;
+export default teacherRouter;

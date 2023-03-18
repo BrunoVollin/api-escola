@@ -1,15 +1,15 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import usersRouter from './src/routes/teacherRoutes';
+import teacherRoutes from './src/routes/teacherRoutes';
+import usersRouter from './src/routes/userRoutes';
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/users',usersRouter);
+app.use('/teacher',teacherRoutes);
+
 
 export default app;
-
-
-

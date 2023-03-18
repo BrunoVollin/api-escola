@@ -1,3 +1,8 @@
+//  test has n  Students 
+//  test has  1  Teacher
+//  test has 1 class 
+// test has variable: name, description, value and score
+
 import {
     Association, DataTypes, Model, Sequelize,
     BelongsToCreateAssociationMixin,
@@ -12,18 +17,19 @@ import {
     BelongsToManyHasAssociationsMixin,
     BelongsToManyRemoveAssociationMixin,
     BelongsToManyRemoveAssociationsMixin,
-    BelongsToManySetAssociationsMixin,
-    HasManyCreateAssociationMixin,
-    HasManyGetAssociationsMixin
+    BelongsToManySetAssociationsMixin
 } from 'sequelize'
 
 import Student from './studentModel'
 import Teacher from './teacherModel'
-import Test from './testModel'
+import Class from './classModel'
 
-class Class extends Model {
+
+export default class Test extends Model {
     public name!: string
     public description!: string
+    public value!: number
+    public score!: number
 
     // Auto-generated
     public id!: number
@@ -47,31 +53,32 @@ class Class extends Model {
     public getTeacher!: BelongsToGetAssociationMixin<Teacher>
     public setTeacher!: BelongsToSetAssociationMixin<Teacher, number>
 
-    // Test association
-    public createTest!: HasManyCreateAssociationMixin<Test>
-    public getTests!: HasManyGetAssociationsMixin<Test>
+    // Class association methods
+    public createClass!: BelongsToCreateAssociationMixin<Class>
+    public getClass!: BelongsToGetAssociationMixin<Class>
+    public setClass!: BelongsToSetAssociationMixin<Class, number>
+    
 
     // Populated for inclusions
     public readonly Students?: Student[]
     public readonly Teacher?: Teacher
-    public readonly Tests?: Test[]
-
 
     public static associations: {
-        Students: Association<Class, Student>
-        Teacher: Association<Class, Teacher>
-        Tests: Association<Class, Test>
+        Students: Association<Test, Student>
+        Teacher: Association<Test, Teacher>
     }
 
     public static initialize(sequelize: Sequelize) {
         this.init({
             name: DataTypes.STRING,
-            description: DataTypes.STRING
+            description: DataTypes.STRING,
+            value: DataTypes.INTEGER,
+            score: DataTypes.INTEGER
         }, {
-            sequelize: sequelize,
-
+            sequelize,
+            tableName: 'Tests'
         })
     }
+
 }
 
-export default Class
