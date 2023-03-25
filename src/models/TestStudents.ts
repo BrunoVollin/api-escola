@@ -24,11 +24,6 @@ export default class TestStudent extends Model {
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
 
-    // setStudent
-    public setStudant 
-
-
-
     public static initialize(sequelize: Sequelize) {
         this.init(
             {
