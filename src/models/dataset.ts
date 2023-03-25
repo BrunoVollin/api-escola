@@ -84,6 +84,14 @@ export default async function dataSet() {
         await testJson.addStudent(pedroGomes);
         await testJson.addStudent(luciaAraujo);
 
+        await TestStudent.update({ grade: 10 }, { where: { studentId: joaoSantos.id, testId: testJson.id } });
+        await TestStudent.update({ grade: 8 }, { where: { studentId: mariaSilva.id, testId: testJson.id } });
+        await TestStudent.update({ grade: 7 }, { where: { studentId: lucasOliveira.id, testId: testJson.id } });
+        await TestStudent.update({ grade: 5 }, { where: { studentId: pedroGomes.id, testId: testJson.id } });
+        await TestStudent.update({ grade: 3 }, { where: { studentId: luciaAraujo.id, testId: testJson.id } });
+
+        
+
 
     } catch (e) {
         console.log(e)
